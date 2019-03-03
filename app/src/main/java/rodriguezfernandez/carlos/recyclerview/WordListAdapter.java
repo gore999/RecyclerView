@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.LinkedList;
 
@@ -45,9 +46,11 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordVi
         return mWordList.size();
     }
 
-    public class WordViewHolder extends RecyclerView.ViewHolder {
+
+
+    public class WordViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         //Contendrá un adaptador y un textview
-        final TextView wordItemView;
+        public final TextView wordItemView;
         final WordListAdapter mAdapter;
         //El constructor necesítará un view y un adaptador para rellenar los anteriores.
         public WordViewHolder(@NonNull View itemView, WordListAdapter adapter) {
@@ -56,7 +59,20 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordVi
             wordItemView= itemView.findViewById(R.id.word);
             //Crear el adaptador.
             this.mAdapter=adapter;
+            //Añadir el escuchador (el propio WordViewHolder).
+            itemView.setOnClickListener(this);
 
+        }
+
+        @Override
+        public void onClick(View v) {
+            //Que elemento he pulsado? devuelve la posicion.
+            int mPosition=getLayoutPosition();
+            //Creo un String con los datos que contiene el view.
+            String element=mWordList.get(mPosition);
+            //Modifico el elemento de esa posicion, cambiando el texto.
+            mWordList.set(mPosition,"Clicked!"+element);
+            mAdapter.notifyDataSetChanged();
         }
     }
 }
